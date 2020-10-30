@@ -35,6 +35,8 @@ def main():
                         help='model to use for training (default: nlayerGNN)')
     parser.add_argument('--layer_number', type=int, default=1,
                         help='input layer number for nlayerGNN')
+    parser.add_argument('--image_path', type=int, default=None,
+                        help='draw the graph to the path')
     
     parser.add_argument('--dataset', type=str, default='cora', choices=['cora'],
                         help='data set type (default cora and only support cora now)')
@@ -56,7 +58,7 @@ def main():
                         help='learning rate (default: 1e-3)')
     
     args = parser.parse_args()
-    cora = cora_loader(args.cora_path + '/cora.content', args.cora_path + '/cora.cites')
+    cora = cora_loader(args.cora_path + '/cora.content', args.cora_path + '/cora.cites', args.image_path)
     model = gnn_nlayer(channels = args.channels, dropout = args.dropout, l2_reg = args.l2_reg)
     X, y, A = cora.get_train()
     model.fit(X, y, A)

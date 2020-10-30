@@ -5,6 +5,7 @@ import random
 
 from sklearn.preprocessing import LabelEncoder
 from keras.utils import to_categorical
+from src.draw import vis_graph
 
 def encode_label(y):
     '''
@@ -17,7 +18,7 @@ def encode_label(y):
 
 #https://towardsdatascience.com/graph-convolutional-networks-on-node-classification-2b6bbec1d042
 class cora_loader():
-    def __init__(self, path_con, path_city):
+    def __init__(self, path_con, path_city, image_path):
         '''
             @ params：
                 path_con: path for the file cora.content
@@ -52,7 +53,8 @@ class cora_loader():
         G = nx.Graph()
         G.add_nodes_from(nodes)
         G.add_edges_from(edge_list)
-
+        if image_path != None:
+            vis_graph(G, image_path)
         #obtain the adjacency matrix (A)
         self.A = nx.adjacency_matrix(G)
         
