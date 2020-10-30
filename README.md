@@ -18,3 +18,8 @@ example:
     >>> python run.py --layer_number 3
     >>> python run.py --layer_number 1 --epochs 250
     
+ 
+ ### reponsibility:
+ * Xinrui Zhan: cora_loader.py, nlayer_gnn.py, packed functions into run.py
+ * Yimei Zhao: dataloader.py, nlayer_gnn.py, draw.py, cora_loader.py
+ ###
