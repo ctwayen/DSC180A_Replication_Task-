@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import networkx as nx
 def vis_graph(graph, image_path):
-    #initialze Figure
+    #https://stackoverflow.com/questions/17381006/large-graph-visualization-with-python-and-networkx
     plt.figure(num=None, figsize=(20, 20), dpi=80)
     plt.axis('off')
     fig = plt.figure(1)
