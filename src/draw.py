@@ -1,19 +1,14 @@
 import matplotlib.pyplot as plt
 import networkx as nx
-def vis_graph(graph, image_path):
-    #https://stackoverflow.com/questions/17381006/large-graph-visualization-with-python-and-networkx
+def vis_graph(graph, image_path, mode='circular'):
     plt.figure(num=None, figsize=(20, 20), dpi=80)
     plt.axis('off')
     fig = plt.figure(1)
-    pos = nx.spring_layout(graph)
-    nx.draw_networkx_nodes(graph,pos)
-    nx.draw_networkx_edges(graph,pos)
-    nx.draw_networkx_labels(graph,pos)
-    
-    cut = 1.00
-    xmax = cut * max(xx for xx, yy in pos.values())
-    ymax = cut * max(yy for xx, yy in pos.values())
-    plt.xlim(0, xmax)
-    plt.ylim(0, ymax)
-    
+    if mode == 'spectral':
+        nx.draw_spectral(graph)
+    if mode == 'spring':
+        nx.draw_spring(graph)
+    if mode == 'circular':
+        nx.draw_circular(graph)
+    #plt.show()
     plt.savefig(image_path)

@@ -5,7 +5,7 @@ import random
 
 from sklearn.preprocessing import LabelEncoder
 from keras.utils import to_categorical
-from src.draw import vis_graph
+from src.eda_functions import vis_graph
 
 def encode_label(y):
     '''
