@@ -70,3 +70,15 @@ def load_cora(path_con, path_city):
     G.add_nodes_from(nodes)
     G.add_edges_from(edge_list)
     return G
+
+def centrality_hist(G, centrality = "closeness_centrality"):
+    if centrality == "closeness_centrality":
+        centrality = nx.closeness_centrality(G, u=None, distance=None, wf_improved=True)
+    elif centrality == "betweenness_centrality":
+        centrality = nx.betweenness_centrality(G, u=None, distance=None, wf_improved=True)
+    elif centrality == "degree_centrality":
+        centrality = nx.degree_centrality(G, u=None, distance=None, wf_improved=True)
+    values = centrality.values()
+    plt.hist(values)
+    sorted_cent = sorted(centrality, key=centrality.__getitem__, reverse=True)[:10]
+    print(sorted_cent)
