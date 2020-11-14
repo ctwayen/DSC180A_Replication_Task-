@@ -26,7 +26,7 @@ def load_cora(path_con, path_city):
 def sigmoid(x):
     return 1 / (1 + math.exp(-x))
 
-def degree_hist(graph, sig=True, filepath):
+def degree_hist(graph, filepath, sig=True):
     degrees = dict(G.degree()).values()
     if not sig:
         plt.hist(degrees)
