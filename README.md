@@ -1,6 +1,6 @@
 # DSC180A_Replication_Task-
 
-run.py
+run.py  
     --params:
         model: the model chose to run. Now only support graph (GNN)  
         image_path：The path of the image of drawing the input graph. If None, will not store a image.  
