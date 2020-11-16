@@ -3,5 +3,5 @@
     "build": "run.py", 
     "library": ["src"], 
     "notebook": ["notebooks/graph_EDA.ipynb"] 
-    "targets": ["model", "dataset"]
+    "targets": ["model", "dataset", "hidden_neurons", "epochs"]
 }
