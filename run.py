@@ -31,8 +31,8 @@ def main():
     local_data = local_path + '/data'
     local_output = local_path + '/config/model-output.json'
     parser = argparse.ArgumentParser(description='Running model')
-    parser.add_argument('--model', type=str, default='graph', choices=['graph'],
-                        help='model to use for training (default: nlayerGNN)')
+    parser.add_argument('--model', type=str, default='graph', choices=['graph', 'LPA_GCN'],
+                        help='model to use for training (default: 2layerGNN)')
     parser.add_argument('--image_path', type=int, default=None,
                         help='draw the graph to the path')
     parser.add_argument('--dataset', type=str, default='cora', choices=['cora'],
@@ -42,6 +42,8 @@ def main():
     parser.add_argument('--output_path', type=str, default=local_output,
                         help='path for the output json file')
     
+    parser.add_argument('--len_walk', type=int, default=3,
+                        help='the length of random walk; only used when model is LPA_GCN')
     parser.add_argument('--hidden_neurons', type=int, default=200,
                         help='hidden neurons in hidden layer (GNN) (default: 200)')
     parser.add_argument('--device', type=str, default='cuda',
@@ -53,13 +55,16 @@ def main():
     
     args = parser.parse_args()
     cora = cora_loader(args.cora_path + '/cora.content', args.cora_path + '/cora.cites', args.image_path)
-    model = GNN(hidden_neurons=args.hidden_neurons, learning_rate=args.lr, epoch=args.epochs, device=args.device)
     X, y, A = cora.get_train()
-    model.fit(X, y, A)
-    hist = model.train_epoch()
+    if args.model == graph:
+        model = GNN(hidden_neurons=args.hidden_neurons, learning_rate=args.lr, epoch=args.epochs, device=args.device)
+        model.fit(X, y, A)
+        hist = model.train()
+    if args.model == 'LPA_GCN':
+        model = LPA_GCN(A, X, y, device = args.device, len_walk = args.len_walk)
+        hist = model.train_model(epochs = args.epochs, lr=args.lr)
     with open(args.output_path, 'w') as f:
-        json.dump(hist, f)
-    print('success write model history into file')
+            json.dump(hist, f)
         
 if __name__ == '__main__':
     main()
