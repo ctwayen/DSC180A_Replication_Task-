@@ -3,7 +3,7 @@ import argparse
 from src.coraloader import cora_loader
 from src.two_layer_gnn import GNN
 from src.coraloader import encode_label
-
+from src.LPA_GCN import LPA_GCN
 import pandas as pd
 import numpy as np
 import networkx as nx
@@ -56,7 +56,7 @@ def main():
     args = parser.parse_args()
     cora = cora_loader(args.cora_path + '/cora.content', args.cora_path + '/cora.cites', args.image_path)
     X, y, A = cora.get_train()
-    if args.model == graph:
+    if args.model == 'graph':
         model = GNN(hidden_neurons=args.hidden_neurons, learning_rate=args.lr, epoch=args.epochs, device=args.device)
         model.fit(X, y, A)
         hist = model.train()
