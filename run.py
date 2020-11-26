@@ -53,7 +53,9 @@ def main():
     parser.add_argument('--lr', type=float, default=1e-3,
                         help='learning rate (default: 1e-3)')
     parser.add_argument(--test', action = 'store_true', help='running test')
-    
+                        
+    args = parser.parse_args()
+                        
     if args.test:
         with open('test/testdata/test.json') as f:
              data = json.load(f)
