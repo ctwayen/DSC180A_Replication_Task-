@@ -92,8 +92,8 @@ class GNN():
         self.dataset = TensorDataset(X, y)
         self.dataloader = DataLoader(self.dataset, batch_size=2708, shuffle=True, **self.kwargs)
         
-    def train_epoch(self):
-        model = two_layer_GraphNet(self.A, self.device)
+    def train_epoch(self, F = 1433, class_number=7):
+        model = two_layer_GraphNet(self.A, self.device, F=F, class_number=class_number)
         model.to(self.device)
         optimizer = optim.Adam(model.parameters(), lr=self.learning_rate)
         accs = {'acc': []}
