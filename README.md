@@ -1,8 +1,11 @@
 # DSC180A_Replication_Task-
 
+### Project
+Running LPA_GCN, GCN, and GraphSage on graph data. Notice that GCN is run through LPA_GCN by setting lambda to 0. 
+
 run.py  
     --params:  
-        model: the model chose to run. Now only support graph (GNN) and (LPA_GCN)。 Default is GNN
+        model: the model chose to run. Now only support graph (GNN) and (LPA_GCN) Default is GCN
         image_path：The path of the image of drawing the input graph. If None, will not store a image.  
         dataset: the dataset. Now only support cora  
         cora_path: the path for cora dataset. Default is the relative path '/data/'  
@@ -18,7 +21,8 @@ example:
     >>> python run.py  
     >>> python run.py --hidden_neurons 100  
     >>> python run.py --hidden_neurons 100 --epochs 200    
-    >>> python run.py --model LPA_GCN
+    >>> python run.py --model LPA_GCN --Lambda 2
+    >>> python run.py --model LPA_GCN --Lambda 2 --val_size 0.5
     
  
  ### reponsibility:

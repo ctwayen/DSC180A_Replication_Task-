@@ -1,7 +1,6 @@
 import json
 import argparse
 from src.coraloader import cora_loader
-from src.two_layer_gnn import GNN
 from src.coraloader import encode_label
 from src.LPA_GCN import LPA_GCN
 import pandas as pd
@@ -45,31 +44,33 @@ def main():
     parser.add_argument('--len_walk', type=int, default=3,
                         help='the length of random walk; only used when model is LPA_GCN')
     parser.add_argument('--hidden_neurons', type=int, default=200,
-                        help='hidden neurons in hidden layer (GNN) (default: 200)')
+                        help='hidden neurons in hidden layer (GCN) (default: 200)')
     parser.add_argument('--device', type=str, default='cuda',
                         help='Device for trianing the model (dafault: cuda)')
     parser.add_argument('--epochs', type=int, default=50,
                         help='number of epochs to train (default: 50)')
     parser.add_argument('--lr', type=float, default=1e-3,
                         help='learning rate (default: 1e-3)')
+    parser.add_argument('--val_size', type=float, default=0.3,
+                        help='Validtion size (default: 0.3)')
+    parser.add_argument('--Lambda', type=float, default=0.3,
+                        help='Lambda used in LPA-GCN model (default: 0.3)')
     parser.add_argument('--test', action = 'store_true', help='running test')
     args = parser.parse_args()
     if args.test:
         with open('test/testdata/test.json') as f:
              data = json.load(f)
         X, y, A = np.array(data['X']), np.array(data['y']), np.array(data['A'])
-        model = GNN()
-        model.fit(X, y, A)
-        hist = model.train_epoch(F=2, class_number=2)
+        model = LPA_GCN(A, X, y, 0)
+        hist = model.train_model()
     else:
         cora = cora_loader(args.cora_path + '/cora.content', args.cora_path + '/cora.cites', args.image_path)
         X, y, A = cora.get_train()
         if args.model == 'graph':
-            model = GNN(hidden_neurons=args.hidden_neurons, learning_rate=args.lr, epoch=args.epochs, device=args.device)
-            model.fit(X, y, A)
-            hist = model.train_epoch()
+            model = LPA_GCN(A, X, y, 0, device = args.device, hid=args.hidden_neurons, val=args.val_size)
+            hist = model.train_model(epochs = args.epochs, lr=args.lr)
         if args.model == 'LPA_GCN':
-            model = LPA_GCN(A, X, y, device = args.device, len_walk = args.len_walk)
+            model = LPA_GCN(A, X, y, args.Lambda, device = args.device, hid=args.hidden_neurons, val=args.val_size, len_walk=args.len_walk)
             hist = model.train_model(epochs = args.epochs, lr=args.lr)
     with open(args.output_path, 'w') as f:
             json.dump(hist, f)
