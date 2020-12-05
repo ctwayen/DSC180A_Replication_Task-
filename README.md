@@ -13,6 +13,8 @@ run.py
         n: how many hidden layers used in n_GCN default is 0   
         self_weight: the weight of self loop used in n_GCN default is 10   
         val_size: the proportion of validation dataset default is 0.3   
+        agg_func: the aggregate function used in graphsage default is MEAN   
+        num_neigh: How many neighbors we used in graphsage default is 10. Be carefull using this since some number may cause errors (do not have such amount nodes)   
         hidden_neurons: How many hidden_neurons in one single hidden layer. Only needed when mode is GNN     
         len_walk: The length of random walk. Only needed when model is LPA_GNN     
         device: training device. Default is cuda    
@@ -32,8 +34,9 @@ example:
     running LPA_GCN try:  
     >>> python run.py --model LPA_GCN --Lambda 2   
     >>> python run.py --model LPA_GCN --Lambda 2 --val_size 0.5    
-    
+    running graphsage try:
+    >>> python run.py --model graphsage
+    >>> python run.py --model graphsage --num_neigh 5 --agg_func MAX
  
  ### reponsibility:
- 
  ###
