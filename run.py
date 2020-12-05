@@ -3,6 +3,7 @@ import argparse
 from src.coraloader import cora_loader
 from src.coraloader import encode_label
 from src.LPA_GCN import LPA_GCN
+from src.n_GCN import n_hidden_GCN
 import pandas as pd
 import numpy as np
 import networkx as nx
@@ -30,7 +31,7 @@ def main():
     local_data = local_path + '/data'
     local_output = local_path + '/config/model-output.json'
     parser = argparse.ArgumentParser(description='Running model')
-    parser.add_argument('--model', type=str, default='graph', choices=['graph', 'LPA_GCN'],
+    parser.add_argument('--model', type=str, default='graph', choices=['graph', 'LPA_GCN', 'n_GCN'],
                         help='model to use for training (default: 2layerGNN)')
     parser.add_argument('--image_path', type=int, default=None,
                         help='draw the graph to the path')
@@ -41,6 +42,10 @@ def main():
     parser.add_argument('--output_path', type=str, default=local_output,
                         help='path for the output json file')
     
+    parser.add_argument('--n', type=int, default=0,
+                        help='Number of hidden layers if the model is n_GCN')
+    parser.add_argument('--self_weight', type=int, default=10,
+                        help='The weight of selp loop if the model is n_GCN')
     parser.add_argument('--len_walk', type=int, default=3,
                         help='the length of random walk; only used when model is LPA_GCN')
     parser.add_argument('--hidden_neurons', type=int, default=200,
@@ -66,6 +71,9 @@ def main():
     else:
         cora = cora_loader(args.cora_path + '/cora.content', args.cora_path + '/cora.cites', args.image_path)
         X, y, A = cora.get_train()
+        if args.model == 'n_GCN':
+            model = n_hidden_GCN(A,X,y, N=args.n, hidden_neurons=args.hidden_neurons, self_weight=args.self_weight, val_size=self.val_size)
+            hist = model.train_epoch(epochs=args.epochs, lr=args.lr)
         if args.model == 'graph':
             model = LPA_GCN(A, X, y, 0, device = args.device, hid=args.hidden_neurons, val=args.val_size)
             hist = model.train_model(epochs = args.epochs, lr=args.lr)
