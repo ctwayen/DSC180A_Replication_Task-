@@ -72,7 +72,7 @@ def main():
         cora = cora_loader(args.cora_path + '/cora.content', args.cora_path + '/cora.cites', args.image_path)
         X, y, A = cora.get_train()
         if args.model == 'n_GCN':
-            model = n_hidden_GCN(A,X,y, N=args.n, hidden_neurons=args.hidden_neurons, self_weight=args.self_weight, val_size=self.val_size)
+            model = n_hidden_GCN(A,X,y, N=args.n, hidden_neurons=args.hidden_neurons, self_weight=args.self_weight, val_size=args.val_size)
             hist = model.train_epoch(epochs=args.epochs, lr=args.lr)
         if args.model == 'graph':
             model = LPA_GCN(A, X, y, 0, device = args.device, hid=args.hidden_neurons, val=args.val_size)
