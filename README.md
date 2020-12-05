@@ -25,10 +25,10 @@ example:
     >>> python run.py    
     >>> python run.py --hidden_neurons 100    
     >>> python run.py --hidden_neurons 100 --epochs 200    
-    >>> python run.py --hidden_neurons 100 --epochs 200 --val_size 0.5
-    running n_GCN try:  
-    >>> python run.py --model n_GCN
-    >>> python run.py --model n_GCN --n 1 --self_weight 20   
+    >>> python run.py --hidden_neurons 100 --epochs 200 --val_size 0.5  
+    running n_GCN try:   
+    >>> python run.py --model n_GCN   
+    >>> python run.py --model n_GCN --n 1 --self_weight 20     
     running LPA_GCN try:  
     >>> python run.py --model LPA_GCN --Lambda 2   
     >>> python run.py --model LPA_GCN --Lambda 2 --val_size 0.5    
