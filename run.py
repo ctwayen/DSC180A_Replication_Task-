@@ -49,7 +49,7 @@ def main():
                         help='Number of neighbors used in graphsage default is 10')
     parser.add_argument('--n', type=int, default=0,
                         help='Number of hidden layers if the model is n_GCN')
-    parser.add_argument('--self_weight', type=int, default=10,
+    parser.add_argument('--self_weight', type=float, default=10,
                         help='The weight of selp loop if the model is n_GCN')
     parser.add_argument('--len_walk', type=int, default=3,
                         help='the length of random walk; only used when model is LPA_GCN')
