@@ -34,8 +34,6 @@ def main():
     parser = argparse.ArgumentParser(description='Running model')
     parser.add_argument('--model', type=str, default='graph', choices=['graph', 'LPA_GCN', 'n_GCN', 'graphsage'],
                         help='model to use for training (default: 2layerGNN)')
-    parser.add_argument('--image_path', type=int, default=None,
-                        help='draw the graph to the path')
     parser.add_argument('--dataset', type=str, default='cora', choices=['cora'],
                         help='data set type (default cora and only support cora now)')
     parser.add_argument('--cora_path', type=str, default=local_data,
@@ -74,7 +72,7 @@ def main():
         model = LPA_GCN(A, X, y, 0)
         hist = model.train_model()
     else:
-        cora = cora_loader(args.cora_path + '/cora.content', args.cora_path + '/cora.cites', args.image_path)
+        cora = cora_loader(args.cora_path + '/cora.content', args.cora_path + '/cora.cites')
         X, y, A = cora.get_train()
         if args.model == 'n_GCN':
             model = n_hidden_GCN(A,X,y, N=args.n, hidden_neurons=args.hidden_neurons, self_weight=args.self_weight, val_size=args.val_size)

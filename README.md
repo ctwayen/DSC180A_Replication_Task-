@@ -5,8 +5,7 @@ Running LPA_GCN, GCN, and GraphSage on graph data. Notice that GCN is run throug
 
 run.py  
     --params:  
-        model: the model chose to run. Only support graph (GCN), (LPA_GCN), (n_GCN). Default is GCN    
-        image_path：The path of the image of drawing the input graph. If None, will not store a image.    
+        model: the model chose to run. Only support graph (GCN), (LPA_GCN), (n_GCN). Default is GCN      
         dataset: the dataset. Now only support cora    
         cora_path: the path for cora dataset. Default is the relative path '/data/'    
         output_path: the path for output json file. Default is the relative path '/config/model-output.json'   

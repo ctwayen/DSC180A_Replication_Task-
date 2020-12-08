@@ -9,6 +9,8 @@ import torch
 from sklearn import preprocessing
 from sklearn.model_selection import train_test_split
 import math
+import networkx as nx
+import matplotlib.pyplot as plt
 
 class LPA_GCN_layer(nn.Module):
     def __init__(self, A, F, O, len_walk, bias=True):
@@ -131,3 +133,15 @@ class LPA_GCN():
             lpa_gcn_test_acc.append(accs)
         accs = {'acc': lpa_gcn_test_acc}
         return accs
+    
+    def draw_cora(self):
+        self.lpa_gcn.eval()
+        output = self.lpa_gcn(self.X, self.A, self.labels)[0]
+        pred = output.argmax(dim=1, keepdim=True)
+        A = self.A.cpu().detach().numpy()
+        Y = pred.cpu().detach().numpy()
+        G = nx.from_numpy_matrix(A, nx.DiGraph())
+        plt.figure(figsize=(10,10))
+        pos = nx.spring_layout(G, seed=675)
+        nx.draw(G, pos=pos, node_size=10, edge_size=1,node_color=Y, cmap = 'tab10')
+        plt.show()

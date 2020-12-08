@@ -6,18 +6,6 @@ import random
 from sklearn.preprocessing import LabelEncoder
 from keras.utils import to_categorical
 
-def vis_graph(graph, image_path, mode='circular'):
-    plt.figure(num=None, figsize=(20, 20), dpi=80)
-    plt.axis('off')
-    fig = plt.figure(1)
-    if mode == 'spectral':
-        nx.draw_spectral(graph)
-    if mode == 'spring':
-        nx.draw_spring(graph)
-    if mode == 'circular':
-        nx.draw_circular(graph)
-    #plt.show()
-    plt.savefig(image_path)
 
 def encode_label(y):
     '''
@@ -30,7 +18,7 @@ def encode_label(y):
 
 #https://towardsdatascience.com/graph-convolutional-networks-on-node-classification-2b6bbec1d042
 class cora_loader():
-    def __init__(self, path_con, path_city, image_path):
+    def __init__(self, path_con, path_city):
         '''
             @ params：
                 path_con: path for the file cora.content
@@ -65,8 +53,6 @@ class cora_loader():
         G = nx.Graph()
         G.add_nodes_from(nodes)
         G.add_edges_from(edge_list)
-        if image_path != None:
-            vis_graph(G, image_path)
         #obtain the adjacency matrix (A)
         self.A = np.asarray(nx.adjacency_matrix(G).todense()).reshape(2708, 2708)
         

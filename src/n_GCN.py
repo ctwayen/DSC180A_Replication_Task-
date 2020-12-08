@@ -4,6 +4,8 @@ import torch.nn.functional as F
 from sklearn import preprocessing
 import torch
 import numpy as np
+import networkx as nx
+import matplotlib.pyplot as plt
 
 class GCN_N_layer(nn.Module):
     def __init__(self, A, N=0, F = 1433, class_number=7, hidden_neurons=200):
@@ -100,4 +102,15 @@ class n_hidden_GCN():
             acc.append(accs)
         accs = {'acc': acc}
         return accs
- 
+    
+    def draw_cora(self):
+        self.model.eval()
+        output = self.model(self.X)
+        pred = output.argmax(dim=1, keepdim=True)
+        A = self.A.cpu().detach().numpy()
+        Y = pred.cpu().detach().numpy()
+        G = nx.from_numpy_matrix(A, nx.DiGraph())
+        plt.figure(figsize=(10,10))
+        pos = nx.spring_layout(G, seed=675)
+        nx.draw(G, pos=pos, node_size=10, edge_size=1,node_color=Y, cmap = 'tab10')
+        plt.show()

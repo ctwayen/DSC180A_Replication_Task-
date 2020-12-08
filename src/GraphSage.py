@@ -8,6 +8,8 @@ from sklearn import preprocessing
 import numpy as np
 from torch import optim
 import torch.nn.functional as F
+import networkx as nx
+import matplotlib.pyplot as plt
 
 def aggregate(A, X, len_walk, num_neigh, agg_func):
     norm = torch.div(A, torch.sum(A, axis=1))
@@ -146,3 +148,15 @@ class GraphSage():
             acc.append(accs)
         accs = {'acc': acc}
         return accs
+    
+    def draw_cora(self):
+        self.graphsage.eval()
+        output = self.graphsage(self.X)
+        pred = output.argmax(dim=1, keepdim=True)
+        A = self.A.cpu().detach().numpy()
+        Y = pred.cpu().detach().numpy()
+        G = nx.from_numpy_matrix(A, nx.DiGraph())
+        plt.figure(figsize=(10,10))
+        pos = nx.spring_layout(G, seed=675)
+        nx.draw(G, pos=pos, node_size=10, edge_size=1,node_color=Y, cmap = 'tab10')
+        plt.show()
