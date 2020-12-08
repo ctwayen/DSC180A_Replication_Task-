@@ -6,7 +6,7 @@ Running LPA_GCN, GCN, and GraphSage on graph data. Notice that GCN is run throug
 run.py  
     --params:  
         model: the model chose to run. Only support graph (GCN), (LPA_GCN), (n_GCN). Default is GCN      
-        dataset: the dataset. Now only support cora    
+        dataset: the dataset. Only support cora and arxiv   
         cora_path: the path for cora dataset. Default is the relative path '/data/'    
         output_path: the path for output json file. Default is the relative path '/config/model-output.json'   
         n: how many hidden layers used in n_GCN default is 0   
@@ -21,7 +21,7 @@ run.py
         lr: learning rate    
     more details try python run.py --help    
     
-example:
+cora example:
     running GCN try:  
     >>> python run.py    
     >>> python run.py --hidden_neurons 100    
@@ -33,9 +33,16 @@ example:
     running LPA_GCN try:  
     >>> python run.py --model LPA_GCN --Lambda 2   
     >>> python run.py --model LPA_GCN --Lambda 2 --val_size 0.5    
-    running graphsage try:
-    >>> python run.py --model graphsage
-    >>> python run.py --model graphsage --num_neigh 5 --agg_func MAX
+    running graphsage try:     
+    >>> python run.py --model graphsage    
+    >>> python run.py --model graphsage --num_neigh 5 --agg_func MAX    
+    
+arxiv example:   
+    >>> python run.py --dataset arxiv    
+    >>> python run.py --dataset arxiv --arxiv_size 0.01  
+    >>> python run.py --dataset arxiv --arxiv_size 0.01 --seed 10  
+All the parameters about models run in cora could also work with arxiv
+
+#### Be careful with choosing the value of arxiv_size. The limitation of 4GB RAM is approximatly 0.05. Running models on the whole dataset (1) approximatly need >1tb. 
  
  ### reponsibility:
- ###

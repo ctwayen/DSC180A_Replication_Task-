@@ -5,6 +5,7 @@ from src.coraloader import encode_label
 from src.LPA_GCN import LPA_GCN
 from src.n_GCN import n_hidden_GCN
 from src.GraphSage import GraphSage
+from src.arxiv_loader import arxiv_loader
 import pandas as pd
 import numpy as np
 import networkx as nx
@@ -34,13 +35,14 @@ def main():
     parser = argparse.ArgumentParser(description='Running model')
     parser.add_argument('--model', type=str, default='graph', choices=['graph', 'LPA_GCN', 'n_GCN', 'graphsage'],
                         help='model to use for training (default: 2layerGNN)')
-    parser.add_argument('--dataset', type=str, default='cora', choices=['cora'],
+    parser.add_argument('--dataset', type=str, default='cora', choices=['cora', "arxiv"],
                         help='data set type (default cora and only support cora now)')
-    parser.add_argument('--cora_path', type=str, default=local_data,
-                        help='path for the cora dataset')
     parser.add_argument('--output_path', type=str, default=local_output,
                         help='path for the output json file')
-    
+    parser.add_argument('--arxiv_size', type=int, default=0.05,
+                        help='size of arxiv data (default is 0.05)')
+    parser.add_argument('--seed', type=int, default=40,
+                        help='random seed used in sample arxiv data')
     parser.add_argument('--agg_func', type=str, default='MEAN', choices=['MEAN', 'MAX'],
                         help='aggregate functions used in graphsage dafault is mean')
     parser.add_argument('--num_neigh', type=int, default=10,
@@ -72,20 +74,36 @@ def main():
         model = LPA_GCN(A, X, y, 0)
         hist = model.train_model()
     else:
-        cora = cora_loader(args.cora_path + '/cora.content', args.cora_path + '/cora.cites')
-        X, y, A = cora.get_train()
-        if args.model == 'n_GCN':
-            model = n_hidden_GCN(A,X,y, N=args.n, hidden_neurons=args.hidden_neurons, self_weight=args.self_weight, val_size=args.val_size)
-            hist = model.train_epoch(epochs=args.epochs, lr=args.lr)
-        if args.model == 'graph':
-            model = LPA_GCN(A, X, y, 0, device = args.device, hid=args.hidden_neurons, val=args.val_size)
-            hist = model.train_model(epochs = args.epochs, lr=args.lr)
-        if args.model == 'LPA_GCN':
-            model = LPA_GCN(A, X, y, args.Lambda, device = args.device, hid=args.hidden_neurons, val=args.val_size, len_walk=args.len_walk)
-            hist = model.train_model(epochs = args.epochs, lr=args.lr)
-        if args.model == 'graphsage':
-            model = GraphSage(A, X, y, device=args.device, agg_func=args.agg_func, hidden_neuron=args.hidden_neurons, len_walk=args.len_walk, num_neigh=args.num_neigh, val_size=args.val_size)
-            hist = model.train_epoch(epochs = args.epochs, lr=args.lr)
+        if args.dataset == 'cora':
+            cora = cora_loader('data/cora.content', 'data/cora.cites')
+            X, y, A = cora.get_train()
+            if args.model == 'n_GCN':
+                model = n_hidden_GCN(A,X,y, N=args.n, hidden_neurons=args.hidden_neurons, self_weight=args.self_weight, val_size=args.val_size)
+                hist = model.train_epoch(epochs=args.epochs, lr=args.lr)
+            if args.model == 'graph':
+                model = LPA_GCN(A, X, y, 0, device = args.device, hid=args.hidden_neurons, val=args.val_size)
+                hist = model.train_model(epochs = args.epochs, lr=args.lr)
+            if args.model == 'LPA_GCN':
+                model = LPA_GCN(A, X, y, args.Lambda, device = args.device, hid=args.hidden_neurons, val=args.val_size, len_walk=args.len_walk)
+                hist = model.train_model(epochs = args.epochs, lr=args.lr)
+            if args.model == 'graphsage':
+                model = GraphSage(A, X, y, device=args.device, agg_func=args.agg_func, hidden_neuron=args.hidden_neurons, len_walk=args.len_walk, num_neigh=args.num_neigh, val_size=args.val_size)
+                hist = model.train_epoch(epochs = args.epochs, lr=args.lr)
+        else:
+            loader = arxiv_loader(seed=args.seed, size=args.arxiv_size)
+            A, X, y = loader.get_train()
+            if args.model == 'n_GCN':
+                model = n_hidden_GCN(A,X,y, N=args.n, hidden_neurons=args.hidden_neurons, self_weight=args.self_weight, val_size=args.val_size, F=128, class_number=len(set(y)))
+                hist = model.train_epoch(epochs=args.epochs, lr=args.lr)
+            if args.model == 'graph':
+                model = LPA_GCN(A, X, y, 0, device = args.device, hid=args.hidden_neurons, val=args.val_size, F=128, class_number=len(set(y)))
+                hist = model.train_model(epochs = args.epochs, lr=args.lr)
+            if args.model == 'LPA_GCN':
+                model = LPA_GCN(A, X, y, args.Lambda, device = args.device, hid=args.hidden_neurons, val=args.val_size, len_walk=args.len_walk, F=128, class_number=len(set(y)))
+                hist = model.train_model(epochs = args.epochs, lr=args.lr)
+            if args.model == 'graphsage':
+                model = GraphSage(A, X, y, device=args.device, agg_func=args.agg_func, hidden_neuron=args.hidden_neurons, len_walk=args.len_walk, num_neigh=args.num_neigh, val_size=args.val_size,  F=128, class_num=len(set(y)))
+                hist = model.train_epoch(epochs = args.epochs, lr=args.lr)
     with open(args.output_path, 'w') as f:
             json.dump(hist, f)
         
