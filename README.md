@@ -1,7 +1,7 @@
 # DSC180A_Replication_Task-
 
 ### Project
-Running LPA_GCN, GCN, and GraphSage on graph data. Notice that GCN is run through LPA_GCN by setting lambda to 0. 
+Running LPA_GCN, GCN, and GraphSage on graph data. Notice that GCN is run through LPA_GCN by setting lambda to 0.   
 
 run.py  
     --params:  
@@ -46,3 +46,6 @@ All the parameters about models run in cora could also work with arxiv
 #### Be careful with choosing the value of arxiv_size. The limitation of  datahub is approximatly aournd 0.05 of the whole dataset. Running models on the whole dataset (1) approximatly need >1tb storage. 
  
  ### reponsibility:
+ ### Links:  
+ LPA_GCN paper: https://arxiv.org/pdf/2002.06755.pdf  
+ GraphSage paper: https://cs.stanford.edu/people/jure/pubs/graphsage-nips17.pdf  
