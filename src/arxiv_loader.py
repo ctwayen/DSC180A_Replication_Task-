@@ -8,19 +8,19 @@ class arxiv_loader():
                  features_path='data/features.csv', seed=40, size=0.05):
         np.random.seed(seed)
         ind = np.random.choice(169343, round(169343*size), replace=False)
-        start = pd.read_csv("data/edges.csv")['start']
-        end = pd.read_csv("data/edges.csv")['end']
+        start = pd.read_csv("../data/edges.csv")['start']
+        end = pd.read_csv("../data/edges.csv")['end']
         G = nx.Graph()
         for i in ind:
             G.add_node(i)
         for i in range(start.shape[0]):
             if start[i] in ind and end[i] in ind:
                 G.add_edge(start[i], end[i])
-        self.y = pd.read_csv('data/labels.csv').to_numpy()[ind].ravel()
+        self.y = pd.read_csv('../data/labels.csv').to_numpy()[ind].ravel()
         A = nx.adjacency_matrix(G)
         A = A.todense()
         self.A = np.asarray(A)
-        features = pd.read_csv('data/features.csv')
+        features = pd.read_csv('../data/features.csv')
         X = []
         for f in features['feature'][ind]:
             X.append([float(x) for x in np.array(f[1:-1].split(','))])
