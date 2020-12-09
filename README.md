@@ -43,6 +43,6 @@ arxiv example:
     >>> python run.py --dataset arxiv --arxiv_size 0.01 --seed 10  
 All the parameters about models run in cora could also work with arxiv
 
-#### Be careful with choosing the value of arxiv_size. The limitation of 4GB RAM is approximatly 0.05. Running models on the whole dataset (1) approximatly need >1tb. 
+#### Be careful with choosing the value of arxiv_size. The limitation of  datahub is approximatly aournd 0.05 of the whole dataset. Running models on the whole dataset (1) approximatly need >1tb storage. 
  
  ### reponsibility:
