@@ -47,8 +47,8 @@ All the parameters about models run in cora could also work with arxiv
  
  ### reponsibility:
  Xinrui Zhan: run.py, LPA_GCN.py, n_GCN.py, GraphSage.py, coraloader.py, arxiv_loader.py 
- 
  ShangLi: data/edges.csv, data/labels.csv
+ Yimei Zhao: draw.py, eda_functions.py
  ### Links:  
  LPA_GCN paper: https://arxiv.org/pdf/2002.06755.pdf  
  GraphSage paper: https://cs.stanford.edu/people/jure/pubs/graphsage-nips17.pdf  
