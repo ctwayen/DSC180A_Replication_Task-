@@ -16,7 +16,7 @@ class GCN_N_layer(nn.Module):
         self.hidden = nn.Linear(hidden_neurons, hidden_neurons, bias=True)
         self.fc1 = nn.Linear(F, hidden_neurons, bias=True)
         self.relu = nn.ReLU()
-        self.fc2 = nn.Linear(200, self.class_number, bias=True)
+        self.fc2 = nn.Linear(hidden_neurons, self.class_number, bias=True)
 
     def forward(self, x):
         # training on full x, not batch
