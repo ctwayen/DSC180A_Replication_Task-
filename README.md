@@ -46,7 +46,8 @@ All the parameters about models run in cora could also work with arxiv
 #### Be careful with choosing the value of arxiv_size. The limitation of  datahub is approximatly aournd 0.05 of the whole dataset. Running models on the whole dataset (1) approximatly need >1tb storage. 
  
  ### reponsibility:
- Xinrui Zhan: run.py, LPA_GCN.py, n_GCN.py, GraphSage.py, coraloader.py, arxiv_loader.py   
+ Xinrui Zhan: run.py, LPA_GCN.py, n_GCN.py, GraphSage.py, coraloader.py, arxiv_loader.py 
+ ShangLi: data/edges.csv, data/labels.csv
  ### Links:  
  LPA_GCN paper: https://arxiv.org/pdf/2002.06755.pdf  
  GraphSage paper: https://cs.stanford.edu/people/jure/pubs/graphsage-nips17.pdf  
